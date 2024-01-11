@@ -1,0 +1,69 @@
+# Visit https://docs.rilldata.com/reference/project-files/sources to learn more about Rill source files.
+
+type: "snowflake"
+sql: "
+
+select
+sdr.day Day,
+fb.id as business_id,
+fb.business_name,
+fbt.child as Venue_Type,
+ftv.created_at::date as TV_Created,
+sdr.Device_id,
+sdr.ad_source,
+max(far.online_hours) as Online_Hours,
+sum(impressions) as Monthly_Impressions,
+sum(revenue) as Monthly_Revenue,
+sum(revenue)/sum(impressions)*1000 as Monthly_RPM
+from \"sigma_per_device_revenue\" sdr
+inner join \"freemium_tv\" ftv on ftv.id = sdr.device_id
+left outer join \"freemium_business\" fb on fb.id = ftv.business_id
+left outer join \"freemium_business_types\" fbt on fbt.business_type_id = fb.type
+left outer join \"dma_zip\" dma on dma.zip = coalesce(lpad(ftv.zip,5,'0'), lpad(fb.zip,5,'0'))
+left outer join
+(
+    select date_trunc('month',far.created_at::date) month,tv_id, sum(ad_requests)*10/60 as Online_Hours
+    from \"freemium_ad_request\" far
+    where date_trunc('month',far.created_at::date) in
+    (
+    '2023-02-01',
+    '2023-03-01',
+    '2023-04-01',
+    '2023-05-01',
+    '2023-06-01',
+    '2023-07-01',
+    '2023-08-01',
+    '2023-09-01',
+    '2023-10-01',
+    '2023-11-01',
+    '2023-12-01'
+    )
+    group by date_trunc('month',far.created_at::date), tv_id
+) as far on far.tv_id = sdr.device_id and far.month = date_trunc('month',sdr.day)
+where date_trunc('month',sdr.day) in
+(
+'2023-02-01',
+'2023-03-01',
+'2023-04-01',
+'2023-05-01',
+'2023-06-01',
+'2023-07-01',
+'2023-08-01',
+'2023-09-01',
+'2023-10-01',
+'2023-11-01',
+'2023-12-01'
+)
+group by 
+sdr.day,
+fb.id,
+fb.business_name,
+fbt.child,
+ftv.created_at::date,
+sdr.Device_id,
+sdr.ad_source
+
+
+"
+
+dsn: "VITAL:Cando234!@LOOPMEDIA/LOOP_DW/PUBLIC?warehouse=DASHING&role=PUBLIC"

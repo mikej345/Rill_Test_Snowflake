@@ -1,0 +1,62 @@
+# Visit https://docs.rilldata.com/reference/project-files to learn more about Rill project files.
+
+model: Loopflake_Testing_model
+timeseries: DAY
+measures:
+  - label: Total records
+    expression: count(*)
+    name: total_records
+    description: Total number of records present
+    format_preset: humanize
+    valid_percent_of_total: true
+  - label: Sum(ONLINE_HOURS)
+    expression: sum(ONLINE_HOURS)
+    name: sum(ONLINE_HOURS)
+    description: Sum of ONLINE_HOURS
+    format_preset: humanize
+    valid_percent_of_total: true
+  - label: Sum(MONTHLY_REVENUE)
+    expression: sum(MONTHLY_REVENUE)
+    name: sum(MONTHLY_REVENUE)
+    description: Sum of MONTHLY_REVENUE
+    format_preset: humanize
+    valid_percent_of_total: true
+  - label: Sum(MONTHLY_RPM)
+    expression: sum(MONTHLY_RPM)
+    name: sum(MONTHLY_RPM)
+    description: Sum of MONTHLY_RPM
+    format_preset: humanize
+    valid_percent_of_total: true
+dimensions:
+  - name: BUSINESS_ID
+    label: BUSINESS_ID
+    column: BUSINESS_ID
+    description: ""
+  - name: BUSINESS_NAME
+    label: BUSINESS_NAME
+    column: BUSINESS_NAME
+    description: ""
+  - name: VENUE_TYPE
+    label: VENUE_TYPE
+    column: VENUE_TYPE
+    description: ""
+  - name: DEVICE_ID
+    label: DEVICE_ID
+    column: DEVICE_ID
+    description: ""
+  - name: AD_SOURCE
+    label: AD_SOURCE
+    column: AD_SOURCE
+    description: ""
+available_time_zones:
+  - America/Los_Angeles
+  - America/Chicago
+  - America/New_York
+  - Europe/London
+  - Europe/Paris
+  - Asia/Jerusalem
+  - Europe/Moscow
+  - Asia/Kolkata
+  - Asia/Shanghai
+  - Asia/Tokyo
+  - Australia/Sydney
