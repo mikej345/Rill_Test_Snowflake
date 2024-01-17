@@ -1,0 +1,5 @@
+# Visit https://docs.rilldata.com/reference/project-files/sources to learn more about Rill source files.
+
+type: "snowflake"
+sql: "select * from \"enterprise_analyis_map\""
+dsn: "VITAL:Cando234!@LOOPMEDIA/LOOP_DW/PUBLIC?warehouse=DASHING&role=PUBLIC"
